@@ -1,2 +1,5 @@
+
 # CSVtoQDC
-Creating a Nvivo codebook in csv.
+
+An attempt to convert codes from CSV files into a Nvivo codebook (.QDC).
+
