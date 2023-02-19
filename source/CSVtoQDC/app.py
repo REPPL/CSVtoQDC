@@ -102,7 +102,7 @@ class Codebook:
     GENERIC = 'nodes'
 
     DIRECTORY = {
-        'projects': 'import',
+        'import': 'import',
         'export': 'export',
         'errors': 'export/errors'}
 
@@ -137,10 +137,10 @@ class Codebook:
         return logger
 
     def read_project_files(self):
-        """Method to read available project files.
+        """Reads available projects and corresponding CSV files.
         """
         projects = {}
-        directory = f'{os.getcwd()}/{Codebook.DIRECTORY["projects"]}'
+        directory = f'{os.getcwd()}/{Codebook.DIRECTORY["import"]}'
         for path, p, _ in os.walk(directory):
             for project in p:
                 projects[project] = []
@@ -151,6 +151,10 @@ class Codebook:
                             projects[project].append(lst[0]).lower()
                         except AttributeError as e:
                             self.error_logger.exception(e)
+                # Remove empty entries
+                code_list = [cl for cl in projects[project] if cl]
+                projects[project] = code_list
+        print(projects)
         for project, code_lists in projects.items():
             projects[project] = sorted(code_lists)
         return projects
@@ -158,7 +162,7 @@ class Codebook:
     def load_clsts(self):
         """
         """
-        directory = f'{os.getcwd()}/{Codebook.DIRECTORY["projects"]}/{self.name}'
+        directory = f'{os.getcwd()}/{Codebook.DIRECTORY["import"]}/{self.name}'
         descriptions = {}
         codes = []
         if Codebook.GENERIC in self._clsts:
